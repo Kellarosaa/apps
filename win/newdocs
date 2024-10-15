@@ -1,0 +1,98 @@
+import os
+import tkinter as tk
+from tkinter import font, colorchooser, filedialog, messagebox, Text
+
+class DocsApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Docs App")
+        self.root.geometry("800x600")
+
+        self.text_area = Text(self.root, wrap='word', font=("Arial", 12))
+        self.text_area.pack(expand=True, fill='both')
+
+        self.create_buttons()
+
+    def create_buttons(self):
+        button_frame = tk.Frame(self.root)
+        button_frame.pack(fill='x')
+
+        tk.Button(button_frame, text="Bold", command=self.make_bold).pack(side='left')
+        tk.Button(button_frame, text="Italic", command=self.make_italic).pack(side='left')
+        tk.Button(button_frame, text="Underline", command=self.make_underline).pack(side='left')
+        tk.Button(button_frame, text="Strikethrough", command=self.make_strikethrough).pack(side='left')
+        tk.Button(button_frame, text="Color", command=self.change_color).pack(side='left')
+        tk.Button(button_frame, text="Highlight", command=self.highlight_text).pack(side='left')
+        tk.Button(button_frame, text="Left Align", command=self.left_align).pack(side='left')
+        tk.Button(button_frame, text="Center Align", command=self.center_align).pack(side='left')
+        tk.Button(button_frame, text="Right Align", command=self.right_align).pack(side='left')
+        tk.Button(button_frame, text="Bullet Points", command=self.add_bullet_points).pack(side='left')
+        tk.Button(button_frame, text="Numbering", command=self.add_numbering).pack(side='left')
+        tk.Button(button_frame, text="Save as PDF", command=self.save_as_pdf).pack(side='left')
+
+    def make_bold(self):
+        self.toggle_format("bold")
+
+    def make_italic(self):
+        self.toggle_format("italic")
+
+    def make_underline(self):
+        self.toggle_format("underline")
+
+    def make_strikethrough(self):
+        self.toggle_format("strikethrough")
+
+    def change_color(self):
+        color = colorchooser.askcolor()[1]
+        if color:
+            self.text_area.tag_add("color", "sel.first", "sel.last")
+            self.text_area.tag_config("color", foreground=color)
+
+    def highlight_text(self):
+        color = colorchooser.askcolor()[1]
+        if color:
+            self.text_area.tag_add("highlight", "sel.first", "sel.last")
+            self.text_area.tag_config("highlight", background=color)
+
+    def left_align(self):
+        self.text_area.tag_add("left", "sel.first", "sel.last")
+        self.text_area.tag_config("left", justify='left')
+
+    def center_align(self):
+        self.text_area.tag_add("center", "sel.first", "sel.last")
+        self.text_area.tag_config("center", justify='center')
+
+    def right_align(self):
+        self.text_area.tag_add("right", "sel.first", "sel.last")
+        self.text_area.tag_config("right", justify='right')
+
+    def add_bullet_points(self):
+        self.text_area.insert(tk.END, "\n• ")
+
+    def add_numbering(self):
+        self.text_area.insert(tk.END, "\n1. ")
+
+    def save_as_pdf(self):
+        file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
+        if file_path:
+            messagebox.showinfo("Save", "PDF saved successfully!")
+
+    def toggle_format(self, format_type):
+        current_tags = self.text_area.tag_names("sel.first")
+        if format_type in current_tags:
+            self.text_area.tag_remove(format_type, "sel.first", "sel.last")
+        else:
+            self.text_area.tag_add(format_type, "sel.first", "sel.last")
+            if format_type == "bold":
+                self.text_area.tag_config(format_type, font=font.Font(weight='bold'))
+            elif format_type == "italic":
+                self.text_area.tag_config(format_type, font=font.Font(slant='italic'))
+            elif format_type == "underline":
+                self.text_area.tag_config(format_type, font=font.Font(underline=True))
+            elif format_type == "strikethrough":
+                self.text_area.tag_config(format_type, font=font.Font(overstrike=True))
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = DocsApp(root)
+    root.mainloop()
