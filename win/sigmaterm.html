@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power-Shell Terminal</title>
+    <style>
+        body { font-family: monospace; background-color: #222; color: #fff; padding: 20px; }
+        #output { white-space: pre; }
+    </style>
+</head>
+<body>
+    <h1>Power-Shell Terminal</h1>
+    <div id="output"></div>
+    <input type="text" id="commandInput" placeholder="Enter command..." autofocus />
+    <button onclick="executeCommand()">Run</button>
+
+    <script>
+        let variables = {};
+
+        function executeCommand() {
+            const input = document.getElementById('commandInput').value;
+            const output = document.getElementById('output');
+            let response = '';
+
+            if (input.startsWith('sigma(') && input.endsWith(')')) {
+                const message = input.slice(6, -1);
+                response = message;
+            } else if (input.startsWith('var(') && input.endsWith(')')) {
+                const varName = input.slice(4, -1);
+                variables[varName] = 0;
+                response = `Variable ${varName} created with value ${variables[varName]}`;
+            } else if (input.startsWith('increase-var(') && input.endsWith(')')) {
+                const varName = input.slice(13, -1);
+                if (variables[varName] !== undefined) {
+                    variables[varName]++;
+                    response = `Variable ${varName} increased to ${variables[varName]}`;
+                } else {
+                    response = `Variable ${varName} does not exist.`;
+                }
+            } else if (input.startsWith('decrease-var(') && input.endsWith(')')) {
+                const varName = input.slice(13, -1);
+                if (variables[varName] !== undefined) {
+                    variables[varName]--;
+                    response = `Variable ${varName} decreased to ${variables[varName]}`;
+                } else {
+                    response = `Variable ${varName} does not exist.`;
+                }
+            } else {
+                response = 'Invalid command.';
+            }
+
+            output.textContent += `> ${input}\n${response}\n`;
+            document.getElementById('commandInput').value = '';
+        }
+    </script>
+</body>
+</html>
