@@ -1,0 +1,4 @@
+# Run Auto Py to Exe
+import os
+
+os.system("python -m auto_py_to_exe")
