@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Packaging Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Code Packaging Tool</h1>
+    <textarea id="codeInput" rows="10" placeholder="Enter your code here..."></textarea>
+    <input type="text" id="fileName" placeholder="Enter file name (without extension)" />
+    <button id="downloadBtn">Pack and Download</button>
+
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const code = document.getElementById('codeInput').value;
+            const fileName = document.getElementById('fileName').value || 'code';
+            const blob = new Blob([code], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${fileName}.sigmascript`;
+            link.click();
+        });
+    </script>
+</body>
+</html>
