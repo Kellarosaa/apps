@@ -1,0 +1,52 @@
+# Higher or Lower Game
+
+import tkinter as tk
+import random
+import turtle
+
+class HigherLowerGame:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Higher or Lower Game")
+        self.score = random.randint(1, 100)
+        
+        self.label = tk.Label(master, text="Guess a number between 1 and 100:")
+        self.label.pack()
+        
+        self.entry = tk.Entry(master)
+        self.entry.pack()
+        
+        self.button = tk.Button(master, text="Submit", command=self.check_guess)
+        self.button.pack()
+        
+        self.result_label = tk.Label(master, text="")
+        self.result_label.pack()
+        
+        self.turtle_screen = turtle.TurtleScreen(tk.Canvas(master, width=400, height=400))
+        self.turtle_screen.pack()
+        self.t = turtle.RawTurtle(self.turtle_screen)
+        self.t.speed(0)
+
+    def check_guess(self):
+        guess = int(self.entry.get())
+        if guess > self.score:
+            self.result_label.config(text="Lower!")
+            self.draw_lower()
+        elif guess < self.score:
+            self.result_label.config(text="Higher!")
+            self.draw_higher()
+        else:
+            self.result_label.config(text="Correct!")
+
+    def draw_lower(self):
+        self.t.clear()
+        self.t.write("Lower", align="center", font=("Arial", 24, "normal"))
+
+    def draw_higher(self):
+        self.t.clear()
+        self.t.write("Higher", align="center", font=("Arial", 24, "normal"))
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    game = HigherLowerGame(root)
+    root.mainloop()
