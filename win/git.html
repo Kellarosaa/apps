@@ -1,0 +1,54 @@
+# GitHub Repo Downloader
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repo Downloader</title>
+    <style>
+        #progress {
+            width: 100%;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            width: 0;
+            height: 30px;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Download GitHub Repository</h1>
+    <input type="text" id="repo-url" placeholder="Enter GitHub Repo URL">
+    <button id="download-btn">Download</button>
+    <div id="progress">
+        <div id="progress-bar">0%</div>
+    </div>
+
+    <script>
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const url = document.getElementById('repo-url').value;
+            const progressBar = document.getElementById('progress-bar');
+            let percent = 0;
+
+            const interval = setInterval(() => {
+                if (percent < 100) {
+                    percent += 10;
+                    progressBar.style.width = percent + '%';
+                    progressBar.innerText = percent + '%';
+                } else {
+                    clearInterval(interval);
+                    window.location.href = url + '/archive/refs/heads/main.zip';
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>
